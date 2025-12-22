@@ -24,12 +24,6 @@ app.use(express.urlencoded());
 
 // MIDDLEWARES
 
-// COMPROBAR BBDD EN RENDER
-app.get("/test-db", async (req, res) => {
-    const result = await pool.query('SELECT * FROM users');
-    console.log(result.rows);
-})
-
 // LISTENER
 app.listen(port, () => {
     console.log(`Servidor a la escucha del puerto ${port} `);
