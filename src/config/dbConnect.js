@@ -11,5 +11,14 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
+// PRUEBA PARA CONFIRMAR
+const pruebaConexionBBDD = async () => {
+    const result = await pool.query('SELECT * FROM users');
+    console.log(result.rows);
+};
+
+
+pruebaConexionBBDD();
+
 // EXPORTAR CONEXIÓN
-module.exports = { pool };
+module.exports = pool;

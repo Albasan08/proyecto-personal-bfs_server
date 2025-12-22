@@ -10,6 +10,7 @@ const swaggerUi = require('swagger-ui-express');
 // IMPORTACIONES PROPIAS
 const app = express();
 const port = process.env.PORT;
+require("./config/dbConnect");
 
 app.use(cors());
 app.use(cookieParser());
@@ -22,6 +23,12 @@ app.use(cookieParser());
 app.use(express.urlencoded());
 
 // MIDDLEWARES
+
+// COMPROBAR BBDD EN RENDER
+app.get("/test-db", async (req, res) => {
+    const result = await pool.query('SELECT * FROM users');
+    console.log(result.rows);
+})
 
 // LISTENER
 app.listen(port, () => {
