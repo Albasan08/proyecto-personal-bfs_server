@@ -17,8 +17,7 @@ const pruebaConexionBBDD = async () => {
     console.log(result.rows);
 };
 
-
-pruebaConexionBBDD();
+//pruebaConexionBBDD();
 
 // EXPORTAR CONEXIÓN
-module.exports = pool;
+module.exports = { pool };
