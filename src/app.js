@@ -14,12 +14,13 @@ const app = express();
 const port = process.env.PORT;
 require("./config/dbConnect");
 
-app.use(cors());
+app.use(cors({ 
+    origin: process.env.FRONT_URI,
+    credentials: true}));
 app.use(cookieParser());
 app.use(express.json()); // Para JSON
 app.use(express.urlencoded({ extended: true })); // Para formularios
 
-app.use((req, res, next) => { console.log("LLEGA PETICIÓN A:", req.method, req.url); next(); });
 // RUTAS
 app.use("/auth", authRouter);
 

@@ -12,7 +12,7 @@ CREATE TABLE users (
   nombre_user VARCHAR(50) NOT NULL,
   apellido_user VARCHAR(75) NOT NULL,
   email_user VARCHAR(50) NOT NULL UNIQUE,
-  contrasenia_user VARCHAR(20) NOT NULL,
+  contrasenia_user VARCHAR(150) NOT NULL,
   provincia_user VARCHAR(20) NOT NULL,
   id_stripe_pago VARCHAR(20),
   rol_user VARCHAR(20) DEFAULT 'user'

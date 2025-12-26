@@ -3,11 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 // IMPORTACIONES PROPIAS
-const { crearUsuarioNuevo } = require("../controllers/auth.controllers")
+const { crearUsuarioNuevo, loginUsuario, logOutUsuario } = require("../controllers/auth.controllers");
 
 // RUTAS
-//router.get("/login"/* Pendiente array middleware y funciones extras*/);
-router.post("/register", /* Penndiente middlewares*/ crearUsuarioNuevo);
+router.post("/login", loginUsuario);
+router.post("/register", crearUsuarioNuevo);
+router.post("logout", logOutUsuario);
 
 // EXPORTAR
 module.exports = router;
