@@ -24,7 +24,6 @@ const crearUsuarioNuevo = async (req, res) => {
         // Manejar token en cookies
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
             maxAge: 12 * 60 * 60 * 1000,
         });
 
@@ -61,7 +60,6 @@ const loginUsuario = async (req, res) => {
         // Manejar token en cookies
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
             maxAge: 12 * 60 * 60 * 1000,
         });
         console.log(token)
@@ -82,10 +80,13 @@ const loginUsuario = async (req, res) => {
 }
 
 const logOutUsuario = async (req, res) => {
+    console.log("ENTRANDO A LOGOUT USUARIO EN BACK")
     // Borrar cookies con token
     res.clearCookie("token", {
         httpOnly: true,
-        secure: true
+        secure: false, 
+        sameSite: "lax", 
+        path: "/"
     });
 
     return res.status(200).json({
