@@ -10,7 +10,7 @@ const swaggerUi = require('swagger-ui-express');
 
 const authRouter = require("./routes/auth.route");
 const publicRouter = require("./routes/public.route");
-const userRouter = requiere("./routes/userRouter");
+const userRouter = require("./routes/user.route");
 const adminRouter = require("./routes/admin.route");
 const gestorprogramRouter = require("./routes/program.route")
 
@@ -32,7 +32,7 @@ app.use("/experiencias", publicRouter, userRouter, adminRouter);
 app.use("/experiencias/:id", userRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
-app.user("gestor", gestorprogramRouter);
+app.use("gestor", gestorprogramRouter);
 
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

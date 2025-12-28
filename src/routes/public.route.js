@@ -6,8 +6,8 @@ const router = express.Router();
 const { } = require("../controllers/public.controllers");
 
 // RUTAS
-router.get("");
-router.get("/:id");
+router.get("", (req, res) => { res.send("Ruta pública"); });
+router.get("/:id", (req, res) => { res.send("Ruta pública"); });
 
 // EXPORTAR
 module.exports = router;
