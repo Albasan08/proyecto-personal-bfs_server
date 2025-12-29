@@ -46,7 +46,7 @@ const crearUsuarioNuevo = async (req, res) => {
 const loginUsuario = async (req, res) => {
     //console.log(req.body)
     const { email_user, token, uid_user } = req.body
-    //console.log(uid_user)
+    //console.log(token)
     try {
 
         const result = await pool.query(queries.encontrarUsuarioPorEmail, [email_user]);
@@ -77,7 +77,7 @@ const loginUsuario = async (req, res) => {
     } catch(error) {
 
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             ok: false,
             mensaje: "Error, consulte con el administrador"
         })
@@ -112,7 +112,7 @@ const redirigirUserPorRol = (req, res) => {
     try {
 
         const rol = req.cookies.rol
-        console.log(rol);
+        //console.log(rol);
         const redirigirSegunRol = {
             admin: "/admin/info",
             user: "/user/info",

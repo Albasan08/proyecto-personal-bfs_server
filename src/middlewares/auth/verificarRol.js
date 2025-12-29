@@ -2,7 +2,7 @@ const verificarRol = (...rolesPermitidos) => { // Desde las rutas
     return (req, res, next) => {
         // Requerir el uid para después obtener el rol
         const rol = req.cookies.rol;
-        console.log(rol, "DESDE MIDDLEWARE ROLES");
+        //console.log(rol, "DESDE MIDDLEWARE ROLES");
 
         // Si no hay rol parar
         if(!rol) {

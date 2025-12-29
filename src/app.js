@@ -39,6 +39,8 @@ app.use("gestor", gestorprogramRouter);
 
 // MIDDLEWARES
 
+app.use(express.static(__dirname + "/../public"));
+
 // LISTENER
 app.listen(port, () => {
     console.log(`Servidor a la escucha del puerto ${port} `);
