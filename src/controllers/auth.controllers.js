@@ -68,6 +68,10 @@ const loginUsuario = async (req, res) => {
         res.cookie("rol", rol, {
             maxAge: 12 * 60 * 60 * 1000,
         });
+        //Guardar uid en cookies
+        res.cookie("uid_user", uid_user, {
+            maxAge: 12 * 60 * 60 * 1000,
+        });
 
         return res.status(200).json({
             ok: true,

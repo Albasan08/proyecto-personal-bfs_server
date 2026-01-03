@@ -3,11 +3,14 @@ const express = require("express");
 const router = express.Router();
 
 // IMPORTACIONES PROPIAS
-const { } = require("../controllers/public.controllers");
+const { 
+    obtenerTodasExperiencias,
+    obtenerExperienciaPorId
+} = require("../controllers/admin.controllers");
 
 // RUTAS
-router.get("", (req, res) => { res.send("Ruta pública"); });
-router.get("/:id", (req, res) => { res.send("Ruta pública"); });
+router.get("", obtenerTodasExperiencias);
+router.get("/:id", obtenerExperienciaPorId);
 
 // EXPORTAR
 module.exports = router;

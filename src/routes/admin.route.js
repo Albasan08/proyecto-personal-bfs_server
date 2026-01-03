@@ -5,25 +5,31 @@ const router = express.Router();
 // IMPORTACIONES PROPIAS
 const { validarToken } = require("../middlewares/auth/validarToken");
 const { verificarRol } = require("../middlewares/auth/verificarRol");
+
 const { 
     crearExperienciaAdmin,
     obtenerExperienciaPorId,
     editarExperienciaPorId,
     eliminarExperienciaPorId,
-    obtenerTodasExperiencias
+    obtenerTodasExperiencias,
+    obtenerInfoAdminPorUid
 } = require("../controllers/admin.controllers");
+
 const upload = require("../middlewares/admin/uploadImage");
+
 const { 
     validarFormularioCrear,
     validarFormularioEditar
 } = require("../validators/admin.validator");
+
 const { validarImagenMulter } = require("../middlewares/admin/imagenMulter");
 
 // RUTAS
 router.get("", [
     validarToken, 
     verificarRol("admin")], obtenerTodasExperiencias); // ruta experiencias
-//router.get("/:id", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
+
+    //router.get("/:id", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
 
 router.post("/crear", [
     validarToken, 
@@ -51,7 +57,11 @@ router.delete("/eliminar/:id", [
     ], eliminarExperienciaPorId);
 
 //router.get("/gestion-reserva", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
-//router.get("/info", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
+
+router.get("/info", [
+    validarToken, 
+    verificarRol("admin")
+], obtenerInfoAdminPorUid);
 
 // EXPORTAR
 module.exports = router;
