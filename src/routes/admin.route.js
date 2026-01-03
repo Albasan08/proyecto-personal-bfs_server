@@ -8,7 +8,9 @@ const { verificarRol } = require("../middlewares/auth/verificarRol");
 const { 
     crearExperienciaAdmin,
     obtenerExperienciaPorId,
-    editarExperienciaPorId
+    editarExperienciaPorId,
+    eliminarExperienciaPorId,
+    obtenerTodasExperiencias
 } = require("../controllers/admin.controllers");
 const upload = require("../middlewares/admin/uploadImage");
 const { 
@@ -18,7 +20,9 @@ const {
 const { validarImagenMulter } = require("../middlewares/admin/imagenMulter");
 
 // RUTAS
-//router.get("", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
+router.get("", [
+    validarToken, 
+    verificarRol("admin")], obtenerTodasExperiencias); // ruta experiencias
 //router.get("/:id", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
 
 router.post("/crear", [
@@ -40,6 +44,11 @@ router.put("/editar/:id", [
     upload.single("imagen_expe"),
     validarFormularioEditar
     ], editarExperienciaPorId);
+
+router.delete("/eliminar/:id", [
+    validarToken, 
+    verificarRol("admin"),
+    ], eliminarExperienciaPorId);
 
 //router.get("/gestion-reserva", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
 //router.get("/info", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });

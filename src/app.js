@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true })); // Para formularios
 
 // RUTAS
 app.use("/auth", authRouter);
-app.use("/experiencias", publicRouter, userRouter, adminRouter);
+app.use("/experiencias", publicRouter, userRouter, adminRouter, gestorprogramRouter);
 app.use("/experiencias/:id", userRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);

@@ -111,6 +111,10 @@ const obtenerExperienciaPorId = async (req, res) => {
 
 };
 
+const obtenerTodasExperiencias = async (req, res) => {
+
+}
+
 const editarExperienciaPorId = async (req, res) => {
     // Conexión a BBDD
     let client;
@@ -164,10 +168,60 @@ const editarExperienciaPorId = async (req, res) => {
     };
 };
 
+const eliminarExperienciaPorId = async (req, res) => {
+    // Conexión a BBDD
+    let client;
+    // Datos
+    let result;
+    // Capturar id
+    const { id } = req.params;
+    //console.log(id);
+    try {
+
+        client = await pool.connect();
+        //Comprobar si la experiencia existe, si no existe - Error
+        const experienciaExiste = await client.query(queries.obtenerExperienciaPorId, [id]);
+        //console.log(experienciaExiste);
+        if(!id || experienciaExiste.rows.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                error: [
+                    {mensaje: "No se ha encontrado la experiencia"}
+                ]
+            })
+        };
+        // Si existe - Eliminar
+        result = await client.query(queries.eliminarExperienciaporId, [id]);
+
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Experiencia eliminada correctamente"
+            // data: result.rows[0]
+        });
+
+    } catch(error) {
+
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            error: [
+                {mensaje: "Error, contacte con el administrador"}
+            ]
+        });
+
+    } finally {
+
+        client.release();
+
+    };
+};
+
 // EXPORTAR
 module.exports = {
     crearExperienciaAdmin,
     obtenerExperienciaPorId,
-    editarExperienciaPorId
+    editarExperienciaPorId,
+    eliminarExperienciaPorId,
+    obtenerTodasExperiencias
 }
 
