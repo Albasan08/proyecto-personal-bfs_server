@@ -12,7 +12,9 @@ const {
     editarExperienciaPorId,
     eliminarExperienciaPorId,
     obtenerTodasExperiencias,
-    obtenerInfoAdminPorUid
+    obtenerInfoAdminPorUid,
+    obtenerTodasReservasAdmin,
+    gestionReservasAdmin
 } = require("../controllers/admin.controllers");
 
 const upload = require("../middlewares/admin/uploadImage");
@@ -29,7 +31,7 @@ router.get("", [
     validarToken, 
     verificarRol("admin")], obtenerTodasExperiencias); // ruta experiencias
 
-    //router.get("/:id", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
+//router.get("/:id", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
 
 router.post("/crear", [
     validarToken, 
@@ -56,7 +58,15 @@ router.delete("/eliminar/:id", [
     verificarRol("admin"),
     ], eliminarExperienciaPorId);
 
-//router.get("/gestion-reserva", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
+router.get("/gestion-reserva", [
+    validarToken, 
+    verificarRol("admin")
+], obtenerTodasReservasAdmin);
+
+router.put("/gestion-reserva/:id", [
+    validarToken, 
+    verificarRol("admin")
+], gestionReservasAdmin);
 
 router.get("/info", [
     validarToken, 

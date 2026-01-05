@@ -316,6 +316,99 @@ const obtenerInfoAdminPorUid = async (req, res) => {
     };
 };
 
+const obtenerTodasReservasAdmin = async (req, res) => {
+    // Conexión a BBDD
+    let client;
+    // Datos
+    let result;
+
+    try {
+
+        client = await pool.connect();
+        //Comprobar si las reservas, si no existe - Error
+        result = await client.query(queries.reservasExisten);
+        //console.log(experienciaExiste);
+        if(result.rows.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                error: [
+                    {mensaje: "No se han encontrado las reservas"}
+                ]
+            })
+        };
+
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Reservas encontradas correctamente",
+            data: result.rows
+        });
+
+    } catch(error) {
+        
+        console.log(error)
+        return res.status(500).json({
+            ok: false,
+            error: [
+                {mensaje: "Error, contacte con el administrador"}
+            ]
+        });
+
+    } finally {
+
+        client.release();
+    };
+
+};
+
+const gestionReservasAdmin = async (req, res) => {
+    // Conexión a BBDD
+    let client;
+    // Datos
+    let result;
+
+    const { id } = req.params; 
+    const { estado_reserva } = req.body;
+
+    try {
+
+        client = await pool.connect();
+        //Comprobar si las reservas, si no existe - Error
+        const ReservaExiste = await client.query(queries.ReservaExiste, [id]);
+        console.log(ReservaExiste)
+        if(ReservaExiste.rows.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                error: [
+                    {mensaje: "No se ha encontrado la reserva"}
+                ]
+            })
+        };
+
+        result = await client.query(queries.gestionarEstadoReserva, [estado_reserva, id]);
+
+        return res.status(200).json({
+            ok: true,
+            mensaje: "Estado de la reserva actualizada correctamente",
+            data: result.rows[0]
+        });
+
+    } catch(error) {
+        
+        console.log(error)
+        return res.status(500).json({
+            ok: false,
+            error: [
+                {mensaje: "Error, contacte con el administrador"}
+            ]
+        });
+
+    } finally {
+
+        client.release();
+    };
+
+};
+
 // EXPORTAR
 module.exports = {
     crearExperienciaAdmin,
@@ -323,6 +416,8 @@ module.exports = {
     editarExperienciaPorId,
     eliminarExperienciaPorId,
     obtenerTodasExperiencias,
-    obtenerInfoAdminPorUid
+    obtenerInfoAdminPorUid,
+    obtenerTodasReservasAdmin,
+    gestionReservasAdmin
 }
 

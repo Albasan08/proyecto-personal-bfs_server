@@ -11,7 +11,7 @@ const queries = {
         "SELECT rol_user FROM users WHERE uid_user=$1",
     // Fin quieries auth
 
-    // Queries admin experiencias
+    // Queries admin
     experienciaExiste:
         "SELECT * FROM experiences WHERE nombre_expe=$1",
 
@@ -31,7 +31,16 @@ const queries = {
         "SELECT * FROM experiences",
     
     obtenerInfoAdminUid:
-        "SELECT * FROM users WHERE uid_user=$1"
+        "SELECT * FROM users WHERE uid_user=$1",
+
+    reservasExisten:
+        "SELECT * FROM reservations",
+
+    ReservaExiste:
+        "SELECT * FROM reservations WHERE id_reserva = $1",
+
+    gestionarEstadoReserva:
+    "UPDATE reservations SET estado_reserva = $1 WHERE id_reserva = $2 RETURNING *"
 }
 
 module.exports = { queries }
