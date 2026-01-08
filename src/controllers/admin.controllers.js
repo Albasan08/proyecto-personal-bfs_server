@@ -1,4 +1,6 @@
 //IMPORTACIONES DE TERCEROS
+const fs = require("fs"); 
+const path = require("path");
 
 // IMPORTACIONES PROPIAS
 const { pool } = require("../config/dbConnect");
@@ -22,9 +24,7 @@ const crearExperienciaAdmin = async (req, res) => {
         if(experienciaExiste.rows.length > 0) {
             return res.status(400).json({
                 ok: false, 
-                error: [
-                    {mensaje: "No se puede crear la experiencia porque ya existe"}
-                ]
+                mensaje: "No se puede crear la experiencia porque ya existe"
             });
         };
         // Si no existe la experiencia - crearla
@@ -41,10 +41,9 @@ const crearExperienciaAdmin = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
-        })
+            mensaje: "Error, contacte con el administrador"
+        });
+
     } finally {
 
         client.release();
@@ -71,9 +70,7 @@ const obtenerExperienciaPorId = async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado la experiencia"}
-                ]
+                mensaje: "No se ha encontrado la experiencia"
             });
         };
         // Obtener toda la info de la experiencia
@@ -98,9 +95,7 @@ const obtenerExperienciaPorId = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
 
     } finally {
@@ -127,9 +122,7 @@ const obtenerTodasExperiencias = async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se han encontrado las experiencias"}
-                ]
+                mensaje: "No se han encontrado las experiencias"
             });
         };
 
@@ -144,17 +137,14 @@ const obtenerTodasExperiencias = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
-        })
+            mensaje: "Error, contacte con el administrador"
+        });
 
     } finally {
 
         client.release();
 
     };
-
 };
 
 const editarExperienciaPorId = async (req, res) => {
@@ -172,12 +162,12 @@ const editarExperienciaPorId = async (req, res) => {
         const experienciaExiste = await client.query(queries.obtenerExperienciaPorId, [id]);
         //console.log(experienciaExiste);
         if(!id || experienciaExiste.rows.length === 0) {
+
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado la experiencia"}
-                ]
-            })
+                mensaje: "No se ha encontrado la experiencia"
+            });
+
         };
         // Obtener info del body
         const { nombre_expe, desc_corta_expe, desc_larga_expe, duracion_expe, precio_expe, personas_max_expe } = req.body;
@@ -198,9 +188,7 @@ const editarExperienciaPorId = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
 
     } finally {
@@ -225,20 +213,27 @@ const eliminarExperienciaPorId = async (req, res) => {
         const experienciaExiste = await client.query(queries.obtenerExperienciaPorId, [id]);
         //console.log(experienciaExiste);
         if(!id || experienciaExiste.rows.length === 0) {
+
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado la experiencia"}
-                ]
-            })
+                mensaje: "No se ha encontrado la experiencia"
+            });
+
         };
-        // Si existe - Eliminar
+        // Eliminar imagen
+        const imagenAEliminar = experienciaExiste.rows[0].imagen_expe; 
+        const rutaImagen = path.join( process.cwd(), "public", "uploads", "experiencias", imagenAEliminar ); 
+        if (fs.existsSync(rutaImagen)) { 
+
+            fs.unlinkSync(rutaImagen); 
+        };
+        
+        //Eliminar de tabla experiencia
         result = await client.query(queries.eliminarExperienciaporId, [id]);
 
         return res.status(200).json({
             ok: true,
             mensaje: "Experiencia eliminada correctamente"
-            // data: result.rows[0]
         });
 
     } catch(error) {
@@ -246,9 +241,7 @@ const eliminarExperienciaPorId = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+           mensaje: "Error, contacte con el administrador"
         });
 
     } finally {
@@ -272,9 +265,7 @@ const obtenerInfoAdminPorUid = async (req, res) => {
         if(!uid_user) {
             return res.status(400).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado ningún uid_user"}
-                ]
+                mensaje: "No se ha encontrado ningún uid_user"
             });
         };
 
@@ -286,12 +277,10 @@ const obtenerInfoAdminPorUid = async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No existe el usuario con ese uid"}
-                ]
-            })
+                mensaje: "No existe el usuario con ese uid"
+            });
 
-        }
+        };
 
         return res.status(200).json({
             ok: true,
@@ -304,9 +293,7 @@ const obtenerInfoAdminPorUid = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
     
     } finally {
@@ -329,12 +316,12 @@ const obtenerTodasReservasAdmin = async (req, res) => {
         result = await client.query(queries.reservasExisten);
         //console.log(experienciaExiste);
         if(result.rows.length === 0) {
+
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se han encontrado las reservas"}
-                ]
-            })
+                mensaje: "No se han encontrado las reservas"
+            });
+
         };
 
         return res.status(200).json({
@@ -348,9 +335,7 @@ const obtenerTodasReservasAdmin = async (req, res) => {
         console.log(error)
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
 
     } finally {
@@ -374,14 +359,14 @@ const gestionReservasAdmin = async (req, res) => {
         client = await pool.connect();
         //Comprobar si las reservas, si no existe - Error
         const ReservaExiste = await client.query(queries.ReservaExiste, [id]);
-        console.log(ReservaExiste)
+        //console.log(ReservaExiste)
         if(ReservaExiste.rows.length === 0) {
+
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado la reserva"}
-                ]
-            })
+                mensaje: "No se ha encontrado la reserva"
+            });
+
         };
 
         result = await client.query(queries.gestionarEstadoReserva, [estado_reserva, id]);
@@ -397,9 +382,7 @@ const gestionReservasAdmin = async (req, res) => {
         console.log(error)
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
 
     } finally {
