@@ -12,7 +12,7 @@ const authRouter = require("./routes/auth.route");
 const publicRouter = require("./routes/public.route");
 const userRouter = require("./routes/user.route");
 const adminRouter = require("./routes/admin.route");
-const gestorprogramRouter = require("./routes/program.route")
+const gestorprogramRouter = require("./routes/program.route");
 
 // IMPORTACIONES PROPIAS
 const app = express();
@@ -32,7 +32,7 @@ app.use("/experiencias", publicRouter, userRouter, adminRouter, gestorprogramRou
 app.use("/experiencias/:id", userRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
-app.use("gestor", gestorprogramRouter);
+app.use("/gestor", gestorprogramRouter);
 
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

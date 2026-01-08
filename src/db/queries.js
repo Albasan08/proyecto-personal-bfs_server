@@ -40,7 +40,12 @@ const queries = {
         "SELECT * FROM reservations WHERE id_reserva = $1",
 
     gestionarEstadoReserva:
-    "UPDATE reservations SET estado_reserva = $1 WHERE id_reserva = $2 RETURNING *"
+        "UPDATE reservations SET estado_reserva = $1 WHERE id_reserva = $2 RETURNING *",
+    // Fin queries admin
+
+    // Queries gestor program
+    programarExperienciaId:
+        "UPDATE" // PENDIENTE
 }
 
 module.exports = { queries }

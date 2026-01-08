@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 // IMPORTACIONES PROPIAS
 const { queries } = require("../db/queries");
-const { pool } = require("../config/dbConnect")
+const { pool } = require("../config/dbConnect");
 
 const crearUsuarioNuevo = async (req, res) => {
         //console.log(req.body);

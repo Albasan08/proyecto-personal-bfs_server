@@ -81,7 +81,7 @@ const obtenerExperienciaPorId = async (req, res) => {
 
         return res.status(200).json({
             ok: true,
-            mensaje: "Experiencia modificada correctamente",
+            mensaje: "Experiencia encontrada correctamente",
             data: {
                 nombre_expe,
                 desc_corta_expe,
