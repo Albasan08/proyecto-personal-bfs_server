@@ -18,15 +18,16 @@ router.get("/programar/:id", [
     verificarRol("program")
     ], obtenerExperienciaPorId);
 
-router.post("/programar/:id", [
-    validarToken, 
-    verificarRol("program")
-    ], programarExperienciaId);
-
 router.post("/programar/bloquear", [
     validarToken, 
     verificarRol("program")
     ], bloquearProgramacion);
+
+
+router.post("/programar/:id", [
+    validarToken, 
+    verificarRol("program")
+    ], programarExperienciaId);
 
 router.get("/info", [
     validarToken, 

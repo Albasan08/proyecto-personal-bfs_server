@@ -7,3 +7,4 @@ Pendiente endpoints
 
 renombrar a .env.template como .env y añadir las variables de entorno
 
+init2 - coger las imágenes de la carpeta y coger 

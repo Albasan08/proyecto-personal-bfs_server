@@ -44,6 +44,12 @@ const queries = {
     // Fin queries admin
 
     // Queries gestor program
+    obtenerFechasBloqueadas:
+        "SELECT * FROM blocks WHERE fecha_bloqueada && $1::date[]", // Para comparar varías fechas a la vez(array)
+    
+    bloquearFechas:
+        "INSERT INTO blocks(fecha_bloqueada, razon_bloqueo) VALUES($1, $2) RETURNING fecha_bloqueada, razon_bloqueo",
+
     programarExperienciaId:
         "UPDATE" // PENDIENTE
 }

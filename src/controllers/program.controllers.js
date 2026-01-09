@@ -14,12 +14,12 @@ const obtenerInfoGestorPorUid = async (req, res) => {
         //console.log(uid_user);
         // Si hay algún error - error
         if(!uid_user) {
+
             return res.status(400).json({
                 ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado ningún uid_user"}
-                ]
+                mensaje: "No se ha encontrado ningún uid_user"
             });
+
         };
 
         client = await pool.connect();
@@ -30,10 +30,8 @@ const obtenerInfoGestorPorUid = async (req, res) => {
 
             return res.status(404).json({
                 ok: false,
-                error: [
-                    {mensaje: "No existe el usuario con ese uid"}
-                ]
-            })
+                mensaje: "No existe el usuario con ese uid"
+            });
 
         }
 
@@ -48,9 +46,7 @@ const obtenerInfoGestorPorUid = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
     
     } finally {
@@ -103,11 +99,29 @@ const bloquearProgramacion = async (req, res) => {
     // Datos
     let result;
 
+    const { fecha_bloqueada, razon_bloqueo } = req.body;
+
     try {
 
+        client = await pool.connect();
+        // Si la fecha ya está bloqueada - No bloquear
+        const existeFechaBloqueada = await client.query(queries.obtenerFechasBloqueadas, [fecha_bloqueada]);
+        //console.log(existeFechaBloqueada);
+        if(existeFechaBloqueada.lenght > 0) {
+
+            return res.status(400).json({
+                ok: false,
+                mensaje: "No se puede bloquear la fecha ${fechasCoinciden.join(', ')} porque ya está bloqueada"
+            });
+
+        };
+        // Si la fecha no está bloqueada - Bloquear
+        result = await client.query(queries.bloquearFechas, [fecha_bloqueada, razon_bloqueo]);
+        console.log(result)
         return res.status(200).json({
             ok: true,
-            mensaje: "Programación bloqueada de forma correcta"
+            mensaje: "Programación bloqueada de forma correcta",
+            //data:
         });
 
     } catch(error) {
@@ -115,9 +129,7 @@ const bloquearProgramacion = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            error: [
-                {mensaje: "Error, contacte con el administrador"}
-            ]
+            mensaje: "Error, contacte con el administrador"
         });
 
     } finally {
