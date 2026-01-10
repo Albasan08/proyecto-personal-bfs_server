@@ -63,28 +63,50 @@ const programarExperienciaId = async (req, res) => {
     let result;
     // Obtener id de params
     const { id } = req.params;
-    //console.log(id); 
+    const { fechas, rangos } = req.body;
+    console.log(req.body)
     try {
         // Conectar a la BBDD
-        client = await pool.connect();
-        // Comprobar que experiencia existe
-        const experienciaExiste = await client.query(queries.experienciaExiste, [id]);
-        // Si la experiencia no existe - Error
-        if(experienciaExiste.rows.length === 0) {
+        client = await pool.connect(); 
+        // Si la experiencia no existe - Error 
+        const experienciaExiste = await client.query( queries.experienciaExisteId, [id] ); 
+        
+        if (experienciaExiste.rows.length === 0) { 
 
-            return res.status(404).json({
-                ok: false,
-                error: [
-                    {mensaje: "No se ha encontrado la experiencia"}
-                ]
-            });
+            return res.status(404).json({ 
+                ok: false, 
+                mensaje: "No se ha encontrado la experiencia" 
+            }); 
+
+        } 
+        // Insertar horarios nuevos SIEMPRE 
+        const horariosIds = []; 
+        
+        for (const rango of rangos) { 
+
+            const insertarHorario = await client.query( queries.insertarHorario, [rango.inicio, rango.fin] ); 
+            horariosIds.push(insertarHorario.rows[0].id_hor); 
 
         };
+        // Insertar programación nueva SIEMPRE 
+        for (const id_hor of horariosIds) { 
 
-        result = await client.query(queries.programarExperienciaId);
-
+            result = await client.query( queries.programarExperienciaId, [id, fechas, id_hor] ); 
+        };
+        
+        return res.status(201).json({ 
+            ok: true, 
+            mensaje: "Programación añadida correctamente", 
+            data: result.rows 
+        });
 
     } catch(error) {
+
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            return: "Error, contacte con el administrador"
+        })
 
     } finally {
 

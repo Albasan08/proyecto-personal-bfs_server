@@ -1,4 +1,4 @@
-// EXPORTACIONES DE TERCEROS
+// IMPORTACIONES DE TERCEROS
 const { check } = require("express-validator");
 
 const validarFormularioCrear = [

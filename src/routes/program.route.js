@@ -6,27 +6,24 @@ const router = express.Router();
 const { 
     obtenerInfoGestorPorUid,
     programarExperienciaId,
-    bloquearProgramacion
     } = require("../controllers/program.controllers");
-const { obtenerExperienciaPorId } = require("../controllers/admin.controllers")
 const { validarToken } = require("../middlewares/auth/validarToken");
 const { verificarRol } = require("../middlewares/auth/verificarRol");
+const { validarCampos } = require("../middlewares/validarCampos");
+const { validarFormularioProgramar } = require("../validators/program.validator")
 
 // RUTAS
-router.get("/programar/:id", [
+/* router.post("/programar/bloquear", [
     validarToken, 
     verificarRol("program")
-    ], obtenerExperienciaPorId);
+    ], bloquearProgramacion);*/
 
-router.post("/programar/bloquear", [
+
+router.put("/programar/:id", [
     validarToken, 
-    verificarRol("program")
-    ], bloquearProgramacion);
-
-
-router.post("/programar/:id", [
-    validarToken, 
-    verificarRol("program")
+    verificarRol("program"),
+    validarFormularioProgramar,
+    validarCampos
     ], programarExperienciaId);
 
 router.get("/info", [

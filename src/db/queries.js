@@ -51,7 +51,16 @@ const queries = {
         "INSERT INTO blocks(fecha_bloqueada, razon_bloqueo) VALUES($1, $2) RETURNING fecha_bloqueada, razon_bloqueo",
 
     programarExperienciaId:
-        "UPDATE" // PENDIENTE
+        "WITH inserted AS ( INSERT INTO schedules (id_experience, fechas_program, id_horario_program) VALUES ($1, $2, $3) RETURNING id_program, id_experience, fechas_program, id_horario_program ) SELECT i.id_program, i.id_experience, i.fechas_program, i.id_horario_program, t.hora_inicio, t.hora_fin FROM inserted i JOIN timetables t ON t.id_hor = i.id_horario_program;",
+
+    experienciaExisteId:
+        "SELECT * FROM experiences WHERE id_expe=$1",
+
+    insertarHorario:
+        "INSERT INTO timetables (hora_inicio, hora_fin) VALUES ($1, $2) RETURNING id_hor;",
+
+    experienciaYaProgramada:
+        "SELECT * FROM schedules WHERE id_experience = $1"
 }
 
 module.exports = { queries }

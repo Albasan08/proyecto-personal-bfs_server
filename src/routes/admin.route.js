@@ -26,6 +26,8 @@ const {
 
 const { validarImagenMulter } = require("../middlewares/admin/imagenMulter");
 
+const { validarCampos } = require("../middlewares/validarCampos");
+
 // RUTAS
 router.get("", [
     validarToken, 
@@ -38,7 +40,8 @@ router.post("/crear", [
     verificarRol("admin"), 
     upload.single("imagen_expe"),
     validarImagenMulter,
-    validarFormularioCrear
+    validarFormularioCrear,
+    validarCampos
     ], crearExperienciaAdmin);
 
 router.get("/editar/:id", [
@@ -50,7 +53,8 @@ router.put("/editar/:id", [
     validarToken, 
     verificarRol("admin"),
     upload.single("imagen_expe"),
-    validarFormularioEditar
+    validarFormularioEditar,
+    validarCampos
     ], editarExperienciaPorId);
 
 router.delete("/eliminar/:id", [
