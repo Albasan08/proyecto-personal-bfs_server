@@ -5,12 +5,15 @@ const router = express.Router();
 // IMPORTACIONES PROPIAS
 const { 
     obtenerTodasExperiencias,
-    obtenerExperienciaPorId
 } = require("../controllers/admin.controllers");
+
+const {
+    obtenerTodaInfoExperiencia 
+} = require("../controllers/public.controllers");
 
 // RUTAS
 router.get("", obtenerTodasExperiencias);
-router.get("/:id", obtenerExperienciaPorId);
+router.get("/:id", obtenerTodaInfoExperiencia);
 
 // EXPORTAR
 module.exports = router;

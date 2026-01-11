@@ -60,7 +60,18 @@ const queries = {
         "INSERT INTO timetables (hora_inicio, hora_fin) VALUES ($1, $2) RETURNING id_hor;",
 
     experienciaYaProgramada:
-        "SELECT * FROM schedules WHERE id_experience = $1"
+        "SELECT * FROM schedules WHERE id_experience = $1",
+    // Fin queries gestor program
+
+    // Queries user
+    obtenerReservasPorEmail:
+        "SELECT r.*, e.nombre_expe FROM reservations r JOIN experiences e ON r.id_experience = e.id_expe WHERE r.email_user = $1;",
+
+    obtenerProgramacionId:
+        "SELECT s.id_program, s.id_experience, s.fechas_program, s.fechas_bloqueada, t.id_hor, t.hora_inicio, t.hora_fin, t.hora_inicio_bloqueada, t.hora_fin_bloqueada FROM schedules s LEFT JOIN timetables t ON s.id_horario_program = t.id_hor WHERE s.id_experience = $1;",
+
+    crearReservaUser: 
+        "INSERT INTO reservations (email_user, id_experience, fecha_reserva, horario_reserva, personas_reserva, estado_reserva) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *"
 }
 
 module.exports = { queries }
