@@ -1,0 +1,237 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "API Proyecto Personal Bootcamp FS",
+    "description": "API para la gestión de experiencias de enoturismo, usuarios, reservas y paneles de administración.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "http://localhost:3000", "description": "Servidor local" },
+    { "url": "https://proyecto-personal-bfs-server.onrender.com", "description": "Servidor en producción" }
+  ],
+  "tags": [
+    { "name": "auth", "description": "Autenticación y control de sesión" },
+    { "name": "experiencias", "description": "Rutas públicas de experiencias" },
+    { "name": "admin", "description": "Gestión administrativa de experiencias y reservas" },
+    { "name": "user", "description": "Operaciones del usuario con rol user" },
+    { "name": "gestor", "description": "Operaciones del usuario con rol gestor/program" }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Inicio de sesión",
+        "responses": {
+          "200": { "description": "El usuario ha iniciado sesión de forma correcta" },
+          "401": { "description": "Credenciales incorrectas" },
+          "500": { "description": "Error, consulte con el administrador" }
+        }
+      }
+    },
+
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Registrar nuevo usuario",
+        "responses": {
+          "201": { "description": "Usuario creado correctamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error, consulte con el administrador" }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Cerrar sesión",
+        "responses": {
+          "200": { "description": "Sesión cerrada correctamente" },
+          "500": { "description": "Error, consulte con el administrador" }
+        }
+      }
+    },
+
+    "/auth/redirigir": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Redirigir usuario según rol",
+        "responses": {
+          "200": { "description": "Usuario redirigido de forma correcta" },
+          "500": { "description": "Error al redirigir al usuario" }
+        }
+      }
+    },
+
+    "/experiencias": {
+      "get": {
+        "tags": ["experiencias"],
+        "summary": "Obtener todas las experiencias (público)",
+        "responses": {
+          "200": { "description": "Listado obtenido correctamente" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/experiencias/{id}": {
+      "get": {
+        "tags": ["experiencias"],
+        "summary": "Obtener experiencia por ID (público)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Experiencia encontrada de forma correcta" },
+          "404": { "description": "No se ha encontrado la experiencia" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/admin/crear": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "Crear nueva experiencia",
+        "responses": {
+          "201": { "description": "Experiencia creada de forma correcta" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/admin/editar/{id}": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Obtener experiencia por ID (admin)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Experiencia encontrada de forma correcta" },
+          "404": { "description": "No se ha encontrado la experiencia" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      },
+      "put": {
+        "tags": ["admin"],
+        "summary": "Editar experiencia",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Experiencia actualizada de forma correcta" },
+          "404": { "description": "No se ha encontrado la experiencia" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/admin/eliminar/{id}": {
+      "delete": {
+        "tags": ["admin"],
+        "summary": "Eliminar experiencia",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Experiencia eliminada de forma correcta" },
+          "404": { "description": "No se ha encontrado la experiencia" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/experiencias/gestion-reserva": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Obtener todas las reservas",
+        "responses": {
+          "200": { "description": "Reservas obtenidas correctamente" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/experiencias/gestion-reserva/{id}": {
+      "put": {
+        "tags": ["admin"],
+        "summary": "Actualizar estado de una reserva",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Reserva actualizada correctamente" },
+          "404": { "description": "No se ha encontrado la reserva" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/user/info": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Obtener información del usuario",
+        "responses": {
+          "200": { "description": "Datos obtenidos correctamente" },
+          "400": { "description": "No se ha encontrado ningún uid_user" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/user/{id}/reserva": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Crear reserva",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "201": { "description": "Reserva guardada de forma correcta" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/user/confirmacion/reserva": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Confirmación de reserva",
+        "responses": {
+          "200": { "description": "Reserva confirmada" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/gestor/info": {
+      "get": {
+        "tags": ["gestor"],
+        "summary": "Obtener información del gestor",
+        "responses": {
+          "200": { "description": "Información del usuario encontrada correctamente" },
+          "404": { "description": "No existe el usuario con ese uid" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    },
+
+    "/gestor/programar/{id}": {
+      "put": {
+        "tags": ["gestor"],
+        "summary": "Programar experiencia",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "201": { "description": "Programación añadida correctamente" },
+          "404": { "description": "No se ha encontrado la experiencia" },
+          "500": { "description": "Error, contacte con el administrador" }
+        }
+      }
+    }
+  }
+}
