@@ -16,13 +16,32 @@ const gestorprogramRouter = require("./routes/program.route");
 
 // IMPORTACIONES PROPIAS
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 require("./config/dbConnect");
+const frontUri = `${process.env.FRONT_URI}`
+const frontLocal = `${process.env.FRONTLOCAL}`
 
-app.use(cors({ 
-    origin: process.env.FRONT_URI,
-    credentials: true}));
-app.use(cookieParser());
+// CORS
+const whiteList = [frontUri, frontLocal];
+const corsOpciones = {
+    origin: (origin, callback) => {
+        //!origin para permitir las peticiones del Postman
+        if (whiteList.includes(origin) || !origin) {
+            //callback(error, allow)
+            callback(null, true);
+        } else {
+            console.log('Origen no permitido por CORS:', origin);
+            callback(new Error('Esta conexión no está permitida por CORS'));
+        }
+    },
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+};
+
+app.use(cors());
+app.use(cookieParser(corsOpciones));
 app.use(express.json()); // Para JSON
 app.use(express.urlencoded({ extended: true })); // Para formularios
 
