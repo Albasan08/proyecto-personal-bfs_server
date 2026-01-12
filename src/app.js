@@ -26,7 +26,11 @@ const whiteList = [frontUri, frontLocal];
 const corsOpciones = {
     origin: (origin, callback) => {
         //!origin para permitir las peticiones del Postman
-        if (whiteList.includes(origin) || !origin) {
+        if (!origin) {
+            callback(null, true);
+        }
+        
+        if (whiteList.includes(origin)) {
             //callback(error, allow)
             callback(null, true);
         } else {
