@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const swaggerUi = require('swagger-ui-express');
 
 // IMPORTACIONES PROPIAS
-//const swaggerDocument = require('../api-docs/swagger.json');
+const swaggerDocument = require('../api-docs/swagger.json');
 
 const authRouter = require("./routes/auth.route");
 const publicRouter = require("./routes/public.route");
@@ -26,11 +26,7 @@ const whiteList = [frontUri, frontLocal];
 const corsOpciones = {
     origin: (origin, callback) => {
         //!origin para permitir las peticiones del Postman
-        if (!origin) {
-            callback(null, true);
-        }
-        
-        if (whiteList.includes(origin)) {
+        if (whiteList.includes(origin) || !origin) {
             //callback(error, allow)
             callback(null, true);
         } else {
@@ -57,7 +53,7 @@ app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/gestor", gestorprogramRouter);
 
-//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // MIDDLEWARES
 
