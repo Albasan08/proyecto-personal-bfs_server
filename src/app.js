@@ -40,8 +40,8 @@ const corsOpciones = {
     credentials: true
 };
 
-app.use(cors());
-app.use(cookieParser(corsOpciones));
+app.use(cors(corsOpciones));
+app.use(cookieParser());
 app.use(express.json()); // Para JSON
 app.use(express.urlencoded({ extended: true })); // Para formularios
 
