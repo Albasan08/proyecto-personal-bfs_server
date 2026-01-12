@@ -18,7 +18,6 @@ const { validarFormularioProgramar } = require("../validators/program.validator"
     verificarRol("program")
     ], bloquearProgramacion);*/
 
-
 router.put("/programar/:id", [
     validarToken, 
     verificarRol("program"),

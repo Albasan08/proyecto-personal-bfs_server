@@ -1,6 +1,9 @@
 // EXPORTACIONES DE TERCEROS
 const { check } = require("express-validator");
 
+/**
+ * Validaciones de express-validator para validar el formulario de Porgramar experiencia
+ */
 const validarFormularioProgramar = [
 
     check("fechas") 

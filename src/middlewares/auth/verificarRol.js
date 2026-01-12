@@ -1,9 +1,13 @@
+/**
+ * Middleware que gestiona los roles en las rutas
+ * @param  {array} rolesPermitidos Array de roles permitidos
+ * @returns Si el rol no es el permitido - Error / Si el rol está permitido pasa al siguiente middleware/controlador
+ */
 const verificarRol = (...rolesPermitidos) => { // Desde las rutas
+
     return (req, res, next) => {
         // Requerir el uid para después obtener el rol
         const rol = req.cookies.rol;
-        //console.log(rol, "DESDE MIDDLEWARE ROLES");
-
         // Si no hay rol parar
         if(!rol) {
 
@@ -24,7 +28,9 @@ const verificarRol = (...rolesPermitidos) => { // Desde las rutas
         };
 
         next();
+
     };
+
 }
 
 module.exports = { verificarRol }

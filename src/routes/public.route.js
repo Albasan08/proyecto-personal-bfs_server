@@ -6,7 +6,6 @@ const router = express.Router();
 const { 
     obtenerTodasExperiencias,
 } = require("../controllers/admin.controllers");
-
 const {
     obtenerTodaInfoExperiencia 
 } = require("../controllers/public.controllers");

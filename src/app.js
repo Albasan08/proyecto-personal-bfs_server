@@ -3,9 +3,9 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const swaggerUi = require('swagger-ui-express');
 
 // IMPORTACIONES PROPIAS
-const swaggerUi = require('swagger-ui-express');
 //const swaggerDocument = require('../api-docs/swagger.json');
 
 const authRouter = require("./routes/auth.route");
@@ -33,7 +33,6 @@ app.use("/experiencias/:id", userRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/gestor", gestorprogramRouter);
-
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

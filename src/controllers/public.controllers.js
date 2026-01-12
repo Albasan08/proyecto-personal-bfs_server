@@ -2,15 +2,22 @@
 const { queries } = require("../db/queries");
 const { pool } = require("../config/dbConnect");
 
+/**
+ * Función que obtiene toda la información de una experiencia por ID
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ * @returns Información completa de la experiencia
+ */
 const obtenerTodaInfoExperiencia = async (req, res) => {
+    // Conexión con BBDD
     let client;
-
+    // Recoger id de params
     const { id } = req.params;
 
     try {
 
         client = await pool.connect();
-        // 1. Obtener info de la experiencia
+        // 1. Obtener info de la experiencia por ID
         const infoExperiencia = await client.query(queries.obtenerExperienciaPorId, [id]);
         //Si hay algún error - error
         if(infoExperiencia.rows.length === 0) {
@@ -21,7 +28,7 @@ const obtenerTodaInfoExperiencia = async (req, res) => {
             });
 
         };
-        // Obtener programación
+        // Obtener programación de la experiencia por ID
         const programacionExperiencia = await client.query(queries.obtenerProgramacionId, [id]);
 
         return res.status(200).json({

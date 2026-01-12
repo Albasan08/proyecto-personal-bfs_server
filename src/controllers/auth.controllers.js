@@ -5,25 +5,30 @@ const bcrypt = require("bcrypt");
 const { queries } = require("../db/queries");
 const { pool } = require("../config/dbConnect");
 
+/**
+ * Función que crea usuarios en la BBDD
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ */
 const crearUsuarioNuevo = async (req, res) => {
-        //console.log(req.body);
-        const { uid_user, nombre_user, apellido_user, email_user, contrasenia_user, contrasenia_user2, provincia_user, rol_user, token } = req.body
-        //console.log(rol_user, "DESDE EL FRONT");
+    // Recoger datos del body
+    const { uid_user, nombre_user, apellido_user, email_user, contrasenia_user, contrasenia_user2, provincia_user, rol_user, token } = req.body
+        
     try {
         // Encriptar contraseña para guardarla encriptada en la BBDD
         const contraseniaEncriptada = bcrypt.hashSync(contrasenia_user, 10);
-        //console.log(contraseniaEncriptada)
 
         const result = await pool.query(queries.crearUsuario, [uid_user, nombre_user, apellido_user, email_user, contraseniaEncriptada, provincia_user, rol_user])
-        //console.log("Usuario insertado en Postgres:", result.rows[0])
-
         // Manejar token en cookies
         res.cookie("token", token, {
             maxAge: 12 * 60 * 60 * 1000,
         });
-
-        // Guardar el rol en las cookies para después poder utilizarlo
+        // Guardar el rol en las cookies
         res.cookie("rol", rol_user, {
+            maxAge: 12 * 60 * 60 * 1000,
+        });
+        // Guardar uid en cookies
+        res.cookie("uid_user", uid_user, {
             maxAge: 12 * 60 * 60 * 1000,
         });
 
@@ -43,27 +48,29 @@ const crearUsuarioNuevo = async (req, res) => {
     }
 }
 
+/**
+ * Función que inicia sesión de los usuarios a través de email y contraseña
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ * @returns Cookies de rol, token e uid
+ */
 const loginUsuario = async (req, res) => {
-    //console.log(req.body)
+    // Recoger datos del body
     const { email_user, token, uid_user } = req.body
-    //console.log(token)
+    
     try {
 
         const result = await pool.query(queries.encontrarUsuarioPorEmail, [email_user]);
-        //console.log(result);
 
         const user = result.rows[0]
-
         // Manejar token en cookies
         res.cookie("token", token, {
             maxAge: 12 * 60 * 60 * 1000,
         });
-        //console.log(token)
         // Obtener el rol a través de la BBDD
         const rolUser = await pool.query(queries.encontrarRolPorId, [uid_user]);
-        //console.log(rolUser)
+        
         const rol = rolUser.rows[0].rol_user;
-        //console.log(rol);
         // Guardar el rol en las cookies para después poder utilizarlo
         res.cookie("rol", rol, {
             maxAge: 12 * 60 * 60 * 1000,
@@ -88,9 +95,14 @@ const loginUsuario = async (req, res) => {
     }
 }
 
+/**
+ * Función que cierra la sesión del usuario
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ * @returns Limpia las cookies guardadas 
+ */
 const logOutUsuario = async (req, res) => {
-    //console.log("ENTRANDO A LOGOUT USUARIO EN BACK")
-    // Borrar cookies con token y rol
+    // Borrar cookies
     res.clearCookie("token", {
         secure: false, 
         sameSite: "lax", 
@@ -111,12 +123,18 @@ const logOutUsuario = async (req, res) => {
 
 }
 
+/**
+ *  Función que redirige a los usuarios en función del rol guardado en las cookies
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ * @returns Redirigir usuarios a diferentes páginas
+ */
 const redirigirUserPorRol = (req, res) => {
 
     try {
-
+        // Obtener rol por cookies
         const rol = req.cookies.rol
-        //console.log(rol);
+        
         const redirigirSegunRol = {
             admin: "/admin/info",
             user: "/user/info",

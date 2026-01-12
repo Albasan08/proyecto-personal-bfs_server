@@ -1,6 +1,9 @@
 // IMPORTACIONES DE TERCEROS
 const { check } = require("express-validator");
 
+/**
+ * Validaciones de express-validator para validar el formulario de Crear experiencia
+ */
 const validarFormularioCrear = [
 
     check("nombre_expe")
@@ -24,7 +27,11 @@ const validarFormularioCrear = [
 
 ]
 
+/**
+ * Validaciones de express-validator para validar el formulario de Editar experiencia
+ */
 const validarFormularioEditar = [
+
     check("nombre_expe")
         .optional() // Si el campo llega se valida, sino no se valida pero no da error
         .notEmpty().withMessage("El campo del nombre no puede estar vacío")
@@ -47,6 +54,7 @@ const validarFormularioEditar = [
         .notEmpty().withMessage("El campo del máximo de personas no puede estar vacío")
         .isNumeric().withMessage("El campo del máximo de personas no puede tener letras ni símbolos")
         .isLength({ max: 2 }).withMessage("El campo del máximo de personas no puede tener más de 2 cifras")
+
 ]
 
 module.exports = {

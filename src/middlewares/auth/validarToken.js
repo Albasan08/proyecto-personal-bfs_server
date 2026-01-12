@@ -1,8 +1,11 @@
-// IMPORTACIONES DE TERCEROS
-const jwt = require("jsonwebtoken");
-
+/**
+ * Middleware para validar el token desde las cookies (gestionado por firebase)
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ * @param {Function} next Función para pasar al siguiente middleware/controlador.
+ * @returns Si hay algún error en el formulario - Error / Si todo es correcto - No devuelve nada 
+ */
 const validarToken = (req, res, next) => {
-    
     // Si el token viene de las cookies o desde el header
     const token = req.cookies?.token || req.headers["authorization"]?.split(" ")[1];
 
@@ -16,29 +19,6 @@ const validarToken = (req, res, next) => {
 
     next();
 
-    /*try {
-
-        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-        const tokenData = {
-            uid: payload.uid,
-            nombre: payload.nombre,
-        };
-
-        req.tokenData = tokenData;
-
-        // Pasar al siguiente middleware
-        next();
-
-    } catch(error) {
-
-        console.log(error);
-        return res.status(401).json({
-            ok: false,
-            mensaje: "Token no válido"
-        });
-
-    };*/
 }
 
 module.exports = { validarToken }

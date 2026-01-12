@@ -1,3 +1,6 @@
+/**
+ * Objeto que contiene todas las queries usadas para gestionar la BBDD
+ */
 const queries = {
 
     // Queries auth
@@ -72,6 +75,7 @@ const queries = {
 
     crearReservaUser: 
         "INSERT INTO reservations (email_user, id_experience, fecha_reserva, horario_reserva, personas_reserva, estado_reserva) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *"
+    // Fin queries user
 }
 
 module.exports = { queries }

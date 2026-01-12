@@ -3,7 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 // IMPORTACIONES PROPIAS
-const { crearUsuarioNuevo, loginUsuario, logOutUsuario, redirigirUserPorRol } = require("../controllers/auth.controllers");
+const { 
+    crearUsuarioNuevo, 
+    loginUsuario, 
+    logOutUsuario, 
+    redirigirUserPorRol 
+    } = require("../controllers/auth.controllers");
 const { validarToken } = require("../middlewares/auth/validarToken");
 const { verificarRol } = require("../middlewares/auth/verificarRol");
 

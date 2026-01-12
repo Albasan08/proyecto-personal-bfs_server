@@ -2,6 +2,13 @@
 const multer = require("multer"); 
 const path = require("path");
 
+/**
+ * Middleware para eliminar las imágenes de multer cuando se elimina una experiencia
+ * @param {Object} req Objeto de petición: contiene body, params, headers...
+ * @param {Object} res Objeto de respuesta: permite devolver status, json...
+ * @param {Function} next Función para pasar al siguiente middleware/controlador.
+ * @returns Si hay algún error en el formulario - Error / Si todo es correcto - No devuelve nada 
+ */
 const eliminarImagen = (req, res, next) => {
 
     try {

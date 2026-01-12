@@ -33,8 +33,6 @@ router.get("", [
     validarToken, 
     verificarRol("admin")], obtenerTodasExperiencias); // ruta experiencias
 
-//router.get("/:id", [validarToken, verificarRol("admin")], (req, res) => { res.send("Ruta pública"); });
-
 router.post("/crear", [
     validarToken, 
     verificarRol("admin"), 
