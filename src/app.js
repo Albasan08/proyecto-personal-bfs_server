@@ -20,10 +20,9 @@ const port = process.env.PORT || 3000;
 require("./config/dbConnect");
 const frontUri = `${process.env.FRONT_URI}`
 const frontLocal = `${process.env.FRONTLOCAL}`
-const serverUri = `${process.env.APIKEY_SERVER}`
 
 // CORS
-const whiteList = [frontUri, frontLocal, serverUri];
+const whiteList = [frontUri, frontLocal];
 const corsOpciones = {
     origin: (origin, callback) => {
         //!origin para permitir las peticiones del Postman
