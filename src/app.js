@@ -17,6 +17,7 @@ const gestorprogramRouter = require("./routes/program.route");
 // IMPORTACIONES PROPIAS
 const app = express();
 const port = process.env.PORT || 3000;
+const path = require("path");
 require("./config/dbConnect");
 const frontUri = `${process.env.FRONT_URI}`
 const frontLocal = `${process.env.FRONTLOCAL}`
@@ -57,7 +58,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // MIDDLEWARES
 
-app.use(express.static(__dirname + "/../public"));
+//app.use(express.static(__dirname + "/../public"));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // LISTENER
 app.listen(port, () => {
